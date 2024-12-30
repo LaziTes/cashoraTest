@@ -1,5 +1,10 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import UsersManagement from "@/components/admin/UsersManagement";
@@ -10,11 +15,6 @@ import Transactions from "@/components/admin/Transactions";
 import Banks from "@/components/admin/Banks";
 import EmailManagement from "@/components/admin/EmailManagement";
 import Settings from "@/components/admin/Settings";
-import { useEffect } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
 import AdminProfile from "@/components/admin/profile/AdminProfile";
 
 const AdminPortal = () => {
