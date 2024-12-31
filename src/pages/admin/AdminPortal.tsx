@@ -29,24 +29,33 @@ const AdminPortal = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-[#0A0D1B]">
+      <div className="min-h-screen flex w-full bg-navy">
         {isMobile ? (
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="fixed top-4 left-4 z-50">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="fixed top-4 left-4 z-50 md:hidden"
+              >
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-72 bg-navy border-none">
-              <AdminSidebar />
+            <SheetContent 
+              side="left" 
+              className="p-0 w-[280px] bg-navy border-navy-light"
+            >
+              <div className="h-full overflow-y-auto">
+                <AdminSidebar />
+              </div>
             </SheetContent>
           </Sheet>
         ) : (
-          <div className="hidden md:block w-64 min-h-screen">
+          <div className="hidden md:block w-64 min-h-screen border-r border-navy-light">
             <AdminSidebar />
           </div>
         )}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6 overflow-auto">
           <Routes>
             <Route path="/dashboard" element={<AdminDashboard />} />
             <Route path="/users" element={<UsersManagement />} />
