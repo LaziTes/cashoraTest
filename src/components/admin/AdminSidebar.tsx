@@ -19,6 +19,7 @@ import {
   Mail,
   Settings,
   LogOut,
+  DollarSign,
 } from "lucide-react";
 
 const menuItems = [
@@ -49,11 +50,14 @@ const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
   };
 
   return (
-    <Sidebar className="h-full border-r border-navy-light bg-navy">
+    <div className="h-full flex flex-col">
       <SidebarHeader className="p-4 border-b border-navy-light">
-        <span className="text-2xl font-bold text-brand-orange">Cashora</span>
+        <div className="flex items-center gap-2 text-2xl font-bold text-brand-orange">
+          <DollarSign className="h-6 w-6" />
+          <span>Cashora</span>
+        </div>
       </SidebarHeader>
-      <SidebarContent className="px-2">
+      <SidebarContent className="flex-1 px-2">
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.path}>
@@ -76,13 +80,13 @@ const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
       <SidebarFooter className="p-4 mt-auto border-t border-navy-light">
         <button 
           onClick={handleLogout} 
-          className="flex items-center space-x-2 text-muted-foreground hover:text-foreground w-full px-3 py-2 rounded-md hover:bg-navy-light"
+          className="flex items-center space-x-2 text-red-500 hover:text-red-400 w-full px-3 py-2 rounded-md hover:bg-navy-light"
         >
           <LogOut className="h-4 w-4" />
           <span>Logout</span>
         </button>
       </SidebarFooter>
-    </Sidebar>
+    </div>
   );
 };
 

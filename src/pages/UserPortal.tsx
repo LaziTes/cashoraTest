@@ -10,6 +10,7 @@ import {
   LogOut,
   Search,
   Menu,
+  DollarSign,
 } from "lucide-react";
 import { 
   Sidebar, 
@@ -50,7 +51,10 @@ const SidebarContentComponent = ({
   return (
     <>
       <SidebarHeader className="p-4 border-b border-[#1A1F2C]">
-        <div className="text-2xl font-bold text-brand-orange mb-6">CASHORA</div>
+        <div className="flex items-center gap-2 text-2xl font-bold text-brand-orange mb-6">
+          <DollarSign className="h-6 w-6" />
+          <span>CASHORA</span>
+        </div>
         <Button 
           variant="ghost" 
           className="w-full justify-start mb-4 text-muted-foreground hover:text-foreground hover:bg-[#1A1F2C]"
@@ -69,7 +73,7 @@ const SidebarContentComponent = ({
           />
         </div>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="flex-1">
         <SidebarGroup>
           <SidebarGroupContent>
             {menuItems.map((item) => (
@@ -90,7 +94,7 @@ const SidebarContentComponent = ({
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-4 border-t border-[#1A1F2C]">
+      <SidebarFooter className="p-4 mt-auto border-t border-[#1A1F2C]">
         <Button
           onClick={handleLogout}
           variant="ghost"
@@ -117,51 +121,61 @@ const UserPortal = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-[#0A0D1B]">
         {isMobile ? (
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="fixed top-4 left-4 z-40 md:hidden"
+          <>
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="fixed top-4 left-4 z-50 md:hidden"
+                >
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent 
+                side="left" 
+                className="p-0 w-[280px] bg-[#0A0D1B] border-[#1A1F2C]"
               >
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent 
-              side="left" 
-              className="p-0 w-[280px] bg-[#0A0D1B] border-[#1A1F2C]"
-            >
-              <Sidebar className="border-r border-[#1A1F2C]">
+                <div className="h-full flex flex-col">
+                  <SidebarContentComponent 
+                    activeTab={activeTab} 
+                    setActiveTab={(tab) => {
+                      setActiveTab(tab);
+                      setIsOpen(false);
+                    }}
+                    handleLogout={handleLogout}
+                  />
+                </div>
+              </SheetContent>
+            </Sheet>
+            <main className="flex-1 p-6 pl-16 md:pl-6">
+              {activeTab === "dashboard" && <Dashboard />}
+              {activeTab === "deposit" && <Deposit />}
+              {activeTab === "send" && <Send />}
+              {activeTab === "withdraw" && <Withdraw />}
+              {activeTab === "support" && <Support />}
+            </main>
+          </>
+        ) : (
+          <>
+            <div className="hidden md:block w-64 min-h-screen">
+              <Sidebar className="border-r border-[#1A1F2C] bg-[#0A0D1B]">
                 <SidebarContentComponent 
                   activeTab={activeTab} 
-                  setActiveTab={(tab) => {
-                    setActiveTab(tab);
-                    setIsOpen(false);
-                  }}
+                  setActiveTab={setActiveTab}
                   handleLogout={handleLogout}
                 />
               </Sidebar>
-            </SheetContent>
-          </Sheet>
-        ) : (
-          <div className="hidden md:block w-64 min-h-screen">
-            <Sidebar className="border-r border-[#1A1F2C] bg-[#0A0D1B]">
-              <SidebarContentComponent 
-                activeTab={activeTab} 
-                setActiveTab={setActiveTab}
-                handleLogout={handleLogout}
-              />
-            </Sidebar>
-          </div>
+            </div>
+            <main className="flex-1 p-6">
+              {activeTab === "dashboard" && <Dashboard />}
+              {activeTab === "deposit" && <Deposit />}
+              {activeTab === "send" && <Send />}
+              {activeTab === "withdraw" && <Withdraw />}
+              {activeTab === "support" && <Support />}
+            </main>
+          </>
         )}
-
-        <main className="flex-1 p-6 overflow-auto md:ml-0">
-          {activeTab === "dashboard" && <Dashboard />}
-          {activeTab === "deposit" && <Deposit />}
-          {activeTab === "send" && <Send />}
-          {activeTab === "withdraw" && <Withdraw />}
-          {activeTab === "support" && <Support />}
-        </main>
       </div>
     </SidebarProvider>
   );
