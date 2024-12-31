@@ -49,17 +49,21 @@ const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
   };
 
   return (
-    <Sidebar className="border-r border-navy-light bg-navy">
+    <Sidebar className="h-full border-r border-navy-light bg-navy">
       <SidebarHeader className="p-4 border-b border-navy-light">
         <span className="text-2xl font-bold text-brand-orange">Cashora</span>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="px-2">
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.path}>
               <Link to={item.path} onClick={() => handleClick(item.path)}>
                 <SidebarMenuButton
-                  className={`w-full ${location.pathname === item.path ? "bg-navy-light text-brand-orange" : "text-muted-foreground hover:bg-navy-light hover:text-foreground"}`}
+                  className={`w-full ${
+                    location.pathname === item.path 
+                      ? "bg-navy-light text-brand-orange" 
+                      : "text-muted-foreground hover:bg-navy-light hover:text-foreground"
+                  }`}
                 >
                   <item.icon className="h-4 w-4" />
                   <span>{item.label}</span>
@@ -69,8 +73,11 @@ const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="p-4">
-        <button onClick={handleLogout} className="flex items-center space-x-2 text-muted-foreground hover:text-foreground">
+      <SidebarFooter className="p-4 mt-auto border-t border-navy-light">
+        <button 
+          onClick={handleLogout} 
+          className="flex items-center space-x-2 text-muted-foreground hover:text-foreground w-full px-3 py-2 rounded-md hover:bg-navy-light"
+        >
           <LogOut className="h-4 w-4" />
           <span>Logout</span>
         </button>
