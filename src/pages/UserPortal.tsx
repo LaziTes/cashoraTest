@@ -30,10 +30,15 @@ import Withdraw from "@/components/portal/Withdraw";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const UserPortal = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const isMobile = useIsMobile();
-
+const SidebarContentComponent = ({ 
+  activeTab, 
+  setActiveTab, 
+  handleLogout 
+}: { 
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  handleLogout: () => void;
+}) => {
   const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", value: "dashboard" },
     { icon: ArrowDownToLine, label: "Deposit", value: "deposit" },
@@ -42,11 +47,7 @@ const UserPortal = () => {
     { icon: UserRound, label: "Support", value: "support" },
   ];
 
-  const handleLogout = () => {
-    window.location.href = "/signin";
-  };
-
-  const SidebarContent = () => (
+  return (
     <>
       <SidebarHeader className="p-4 border-b border-[#1A1F2C]">
         <div className="text-2xl font-bold text-brand-orange mb-6">CASHORA</div>
@@ -101,6 +102,15 @@ const UserPortal = () => {
       </SidebarFooter>
     </>
   );
+};
+
+const UserPortal = () => {
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const isMobile = useIsMobile();
+
+  const handleLogout = () => {
+    window.location.href = "/signin";
+  };
 
   return (
     <SidebarProvider>
@@ -122,7 +132,11 @@ const UserPortal = () => {
             >
               <div className="h-full overflow-y-auto">
                 <Sidebar className="border-r border-[#1A1F2C]">
-                  <SidebarContent />
+                  <SidebarContentComponent 
+                    activeTab={activeTab} 
+                    setActiveTab={setActiveTab}
+                    handleLogout={handleLogout}
+                  />
                 </Sidebar>
               </div>
             </SheetContent>
@@ -130,7 +144,11 @@ const UserPortal = () => {
         ) : (
           <div className="hidden md:block w-64 min-h-screen">
             <Sidebar className="border-r border-[#1A1F2C] bg-[#0A0D1B]">
-              <SidebarContent />
+              <SidebarContentComponent 
+                activeTab={activeTab} 
+                setActiveTab={setActiveTab}
+                handleLogout={handleLogout}
+              />
             </Sidebar>
           </div>
         )}
