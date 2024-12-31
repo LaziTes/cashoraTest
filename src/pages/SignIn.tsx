@@ -32,21 +32,20 @@ const SignIn = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    // TODO: Implement actual authentication
     navigate("/portal");
   };
 
   return (
-    <ScrollArea className="min-h-screen flex items-center justify-center bg-background p-4">
+    <ScrollArea className="min-h-screen flex items-center justify-center bg-background">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md space-y-8"
+        className="w-full max-w-md mx-auto p-6 space-y-8"
       >
-        <div className="text-center">
+        <div className="text-center space-y-2">
           <h2 className="text-3xl font-bold">Welcome back</h2>
-          <p className="text-muted-foreground mt-2">
+          <p className="text-muted-foreground">
             Sign in to access your account
           </p>
         </div>

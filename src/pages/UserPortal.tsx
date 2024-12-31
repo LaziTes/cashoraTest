@@ -28,6 +28,7 @@ import Deposit from "@/components/portal/Deposit";
 import Send from "@/components/portal/Send";
 import Support from "@/components/portal/Support";
 import Withdraw from "@/components/portal/Withdraw";
+import UserProfile from "@/components/portal/UserProfile";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -58,6 +59,7 @@ const SidebarContentComponent = ({
         <Button 
           variant="ghost" 
           className="w-full justify-start mb-4 text-muted-foreground hover:text-foreground hover:bg-[#1A1F2C]"
+          onClick={() => setActiveTab("profile")}
         >
           <UserRound className="mr-2 h-4 w-4" />
           <span>John Carter</span>
@@ -154,6 +156,7 @@ const UserPortal = () => {
               {activeTab === "send" && <Send />}
               {activeTab === "withdraw" && <Withdraw />}
               {activeTab === "support" && <Support />}
+              {activeTab === "profile" && <UserProfile />}
             </main>
           </>
         ) : (
@@ -173,6 +176,7 @@ const UserPortal = () => {
               {activeTab === "send" && <Send />}
               {activeTab === "withdraw" && <Withdraw />}
               {activeTab === "support" && <Support />}
+              {activeTab === "profile" && <UserProfile />}
             </main>
           </>
         )}

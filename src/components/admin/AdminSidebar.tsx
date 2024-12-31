@@ -20,6 +20,7 @@ import {
   Settings,
   LogOut,
   DollarSign,
+  UserRound,
 } from "lucide-react";
 
 const menuItems = [
@@ -52,10 +53,22 @@ const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
   return (
     <div className="h-full flex flex-col">
       <SidebarHeader className="p-4 border-b border-navy-light">
-        <div className="flex items-center gap-2 text-2xl font-bold text-brand-orange">
+        <div className="flex items-center gap-2 text-2xl font-bold text-brand-orange mb-6">
           <DollarSign className="h-6 w-6" />
           <span>Cashora</span>
         </div>
+        <Link to="/admin/portal/profile" onClick={() => handleClick("/admin/portal/profile")}>
+          <SidebarMenuButton
+            className={`w-full ${
+              location.pathname === "/admin/portal/profile"
+                ? "bg-navy-light text-brand-orange"
+                : "text-muted-foreground hover:bg-navy-light hover:text-foreground"
+            }`}
+          >
+            <UserRound className="h-4 w-4" />
+            <span>Admin Profile</span>
+          </SidebarMenuButton>
+        </Link>
       </SidebarHeader>
       <SidebarContent className="flex-1 px-2">
         <SidebarMenu>
