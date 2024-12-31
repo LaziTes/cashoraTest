@@ -33,11 +33,19 @@ const menuItems = [
   { icon: Settings, label: "Settings", path: "/admin/portal/settings" },
 ];
 
-const AdminSidebar = () => {
+interface AdminSidebarProps {
+  onNavigate?: () => void;
+}
+
+const AdminSidebar = ({ onNavigate }: AdminSidebarProps) => {
   const location = useLocation();
 
   const handleLogout = () => {
     window.location.href = "/admin";
+  };
+
+  const handleClick = (path: string) => {
+    onNavigate?.();
   };
 
   return (
@@ -49,7 +57,7 @@ const AdminSidebar = () => {
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.path}>
-              <Link to={item.path}>
+              <Link to={item.path} onClick={() => handleClick(item.path)}>
                 <SidebarMenuButton
                   className={`w-full ${location.pathname === item.path ? "bg-navy-light text-brand-orange" : "text-muted-foreground hover:bg-navy-light hover:text-foreground"}`}
                 >

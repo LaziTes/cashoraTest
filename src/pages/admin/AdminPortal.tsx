@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
@@ -20,6 +20,7 @@ import AdminProfile from "@/components/admin/profile/AdminProfile";
 const AdminPortal = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (window.location.pathname === "/admin/portal") {
@@ -31,12 +32,12 @@ const AdminPortal = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-navy">
         {isMobile ? (
-          <Sheet>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="fixed top-4 left-4 z-50 md:hidden"
+                className="fixed top-4 left-4 z-40 md:hidden"
               >
                 <Menu className="h-6 w-6" />
               </Button>
@@ -45,9 +46,7 @@ const AdminPortal = () => {
               side="left" 
               className="p-0 w-[280px] bg-navy border-navy-light"
             >
-              <div className="h-full overflow-y-auto">
-                <AdminSidebar />
-              </div>
+              <AdminSidebar onNavigate={() => setIsOpen(false)} />
             </SheetContent>
           </Sheet>
         ) : (
@@ -55,7 +54,7 @@ const AdminPortal = () => {
             <AdminSidebar />
           </div>
         )}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-6 overflow-auto md:ml-0">
           <Routes>
             <Route path="/dashboard" element={<AdminDashboard />} />
             <Route path="/users" element={<UsersManagement />} />

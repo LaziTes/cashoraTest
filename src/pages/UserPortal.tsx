@@ -107,6 +107,7 @@ const SidebarContentComponent = ({
 const UserPortal = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const isMobile = useIsMobile();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
     window.location.href = "/signin";
@@ -116,12 +117,12 @@ const UserPortal = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-[#0A0D1B]">
         {isMobile ? (
-          <Sheet>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="fixed top-4 left-4 z-50 md:hidden"
+                className="fixed top-4 left-4 z-40 md:hidden"
               >
                 <Menu className="h-6 w-6" />
               </Button>
@@ -130,15 +131,16 @@ const UserPortal = () => {
               side="left" 
               className="p-0 w-[280px] bg-[#0A0D1B] border-[#1A1F2C]"
             >
-              <div className="h-full overflow-y-auto">
-                <Sidebar className="border-r border-[#1A1F2C]">
-                  <SidebarContentComponent 
-                    activeTab={activeTab} 
-                    setActiveTab={setActiveTab}
-                    handleLogout={handleLogout}
-                  />
-                </Sidebar>
-              </div>
+              <Sidebar className="border-r border-[#1A1F2C]">
+                <SidebarContentComponent 
+                  activeTab={activeTab} 
+                  setActiveTab={(tab) => {
+                    setActiveTab(tab);
+                    setIsOpen(false);
+                  }}
+                  handleLogout={handleLogout}
+                />
+              </Sidebar>
             </SheetContent>
           </Sheet>
         ) : (
@@ -153,7 +155,7 @@ const UserPortal = () => {
           </div>
         )}
 
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-6 overflow-auto md:ml-0">
           {activeTab === "dashboard" && <Dashboard />}
           {activeTab === "deposit" && <Deposit />}
           {activeTab === "send" && <Send />}
