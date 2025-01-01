@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { CustomBadge } from "@/components/ui/custom-badge";
-import { Settings, User, Trash2 } from "lucide-react";
+import { Settings, User, Trash2, Lock, Unlock } from "lucide-react";
 import { User as UserType, Bank } from "@/utils/userTypes";
 import { UserDetailsDialog } from "./UserDetailsDialog";
 import { UserManageDialog } from "./UserManageDialog";
@@ -53,6 +53,21 @@ export const UsersList = ({ users, banks, onUpdateUser }: UsersListProps) => {
     }
   };
 
+  const handleFreezeUser = () => {
+    if (selectedUser) {
+      onUpdateUser({
+        ...selectedUser,
+        status: selectedUser.status === "frozen" ? "approved" : "frozen",
+      });
+      setIsDeleteDialogOpen(false);
+      setSelectedUser(null);
+      toast({
+        title: `User ${selectedUser.status === "frozen" ? "Unfrozen" : "Frozen"}`,
+        description: `The user has been ${selectedUser.status === "frozen" ? "unfrozen" : "frozen"} successfully`,
+      });
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -90,6 +105,8 @@ export const UsersList = ({ users, banks, onUpdateUser }: UsersListProps) => {
                       ? "success"
                       : user.status === "pending"
                       ? "warning"
+                      : user.status === "frozen"
+                      ? "secondary"
                       : "destructive"
                   }
                 >
@@ -120,12 +137,13 @@ export const UsersList = ({ users, banks, onUpdateUser }: UsersListProps) => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => {
-                    setSelectedUser(user);
-                    setIsDeleteDialogOpen(true);
-                  }}
+                  onClick={handleFreezeUser}
                 >
-                  <Trash2 className="h-4 w-4 text-red-500" />
+                  {user.status === "frozen" ? (
+                    <Lock className="h-4 w-4 text-red-500" />
+                  ) : (
+                    <Unlock className="h-4 w-4" />
+                  )}
                 </Button>
               </TableCell>
             </TableRow>
@@ -147,22 +165,6 @@ export const UsersList = ({ users, banks, onUpdateUser }: UsersListProps) => {
             onOpenChange={setIsManageOpen}
             onUpdate={onUpdateUser}
           />
-          <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Delete User</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure you want to delete this user? This action cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeleteUser} className="bg-red-500 hover:bg-red-600">
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </>
       )}
     </motion.div>
