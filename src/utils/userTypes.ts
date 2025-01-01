@@ -8,7 +8,7 @@ export interface User {
   placeOfBirth: string;
   residence: string;
   nationality: string;
-  status: "pending" | "approved" | "rejected" | "deleted";
+  status: "pending" | "approved" | "rejected" | "deleted" | "frozen";
   role: "user" | "admin";
   balance: number;
   customFee?: {
