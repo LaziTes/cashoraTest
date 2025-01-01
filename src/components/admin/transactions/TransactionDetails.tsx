@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 import { CustomBadge } from "@/components/ui/custom-badge";
+import { TransactionFileViewer } from "./TransactionFileViewer";
 
 interface TransactionDetailsProps {
   transaction: {
@@ -18,6 +19,9 @@ interface TransactionDetailsProps {
     recipient?: string;
     reference?: string;
     fee?: number;
+    file?: File;
+    fileUrl?: string;
+    fileType?: string;
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -100,6 +104,14 @@ export const TransactionDetails = ({
               </div>
             </div>
           </div>
+          
+          {transaction.type === "deposit" && (
+            <TransactionFileViewer
+              file={transaction.file}
+              fileUrl={transaction.fileUrl}
+              fileType={transaction.fileType}
+            />
+          )}
         </motion.div>
       </DialogContent>
     </Dialog>

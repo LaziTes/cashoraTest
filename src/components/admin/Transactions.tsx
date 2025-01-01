@@ -4,15 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownToLine, ArrowUpFromLine, Send } from "lucide-react";
 import { TransactionFilters } from "./transactions/TransactionFilters";
 import { TransactionsList } from "./transactions/TransactionsList";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 
 interface Transaction {
   id: number;
@@ -22,6 +13,9 @@ interface Transaction {
   amount: number;
   date: string;
   status: "completed" | "pending" | "failed";
+  file?: File;
+  fileUrl?: string;
+  fileType?: string;
 }
 
 const Transactions = () => {
@@ -33,6 +27,8 @@ const Transactions = () => {
       amount: 500,
       date: "2024-03-20",
       status: "completed",
+      fileUrl: "/placeholder.svg",
+      fileType: "image/svg+xml"
     },
     {
       id: 2,
@@ -40,7 +36,7 @@ const Transactions = () => {
       user: "Jane Smith",
       amount: 300,
       date: "2024-03-19",
-      status: "pending",
+      status: "pending"
     },
     {
       id: 3,
@@ -49,7 +45,7 @@ const Transactions = () => {
       recipient: "Bob Wilson",
       amount: 150,
       date: "2024-03-18",
-      status: "completed",
+      status: "completed"
     },
   ]);
 
@@ -84,25 +80,6 @@ const Transactions = () => {
 
     setFilteredTransactions(filtered);
   };
-
-  // Calculate chart data
-  const chartData = transactions.reduce((acc: any[], transaction) => {
-    const date = new Date(transaction.date).toLocaleDateString();
-    const existingDay = acc.find((d) => d.date === date);
-    
-    if (existingDay) {
-      existingDay[transaction.type] = (existingDay[transaction.type] || 0) + transaction.amount;
-      existingDay.total = (existingDay.total || 0) + transaction.amount;
-    } else {
-      acc.push({
-        date,
-        [transaction.type]: transaction.amount,
-        total: transaction.amount,
-      });
-    }
-    
-    return acc;
-  }, []);
 
   return (
     <div className="space-y-8">
@@ -176,57 +153,6 @@ const Transactions = () => {
             </motion.div>
           </CardContent>
         </Card>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="h-[400px] bg-card rounded-lg p-4"
-      >
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData}>
-            <defs>
-              <linearGradient id="deposit" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
-              </linearGradient>
-              <linearGradient id="withdrawal" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
-              </linearGradient>
-              <linearGradient id="send" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Area
-              type="monotone"
-              dataKey="deposit"
-              stroke="#22c55e"
-              fillOpacity={1}
-              fill="url(#deposit)"
-            />
-            <Area
-              type="monotone"
-              dataKey="withdrawal"
-              stroke="#ef4444"
-              fillOpacity={1}
-              fill="url(#withdrawal)"
-            />
-            <Area
-              type="monotone"
-              dataKey="send"
-              stroke="#3b82f6"
-              fillOpacity={1}
-              fill="url(#send)"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
       </motion.div>
 
       <TransactionFilters onFilterChange={handleFilterChange} />
