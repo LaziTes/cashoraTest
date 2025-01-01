@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { AddUserDialog } from "./AddUserDialog";
+import { UserManageDialog } from "./UserManageDialog";
 import {
   Table,
   TableBody,
@@ -20,10 +21,15 @@ interface UsersListProps {
 
 export const UsersList = ({ users, onUpdateUser, banks }: UsersListProps) => {
   const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const handleAddUser = (userData: any) => {
     // In a real application, this would make an API call
     console.log("Adding new user:", userData);
+  };
+
+  const handleEditUser = (user: User) => {
+    setSelectedUser(user);
   };
 
   return (
@@ -59,7 +65,7 @@ export const UsersList = ({ users, onUpdateUser, banks }: UsersListProps) => {
               <TableCell className="text-right">
                 <Button
                   variant="ghost"
-                  onClick={() => onUpdateUser(user)}
+                  onClick={() => handleEditUser(user)}
                 >
                   Edit
                 </Button>
@@ -74,6 +80,16 @@ export const UsersList = ({ users, onUpdateUser, banks }: UsersListProps) => {
         onOpenChange={setIsAddUserDialogOpen}
         onAddUser={handleAddUser}
       />
+
+      {selectedUser && (
+        <UserManageDialog
+          user={selectedUser}
+          banks={banks}
+          open={!!selectedUser}
+          onOpenChange={(open) => !open && setSelectedUser(null)}
+          onUpdate={onUpdateUser}
+        />
+      )}
     </div>
   );
 };
