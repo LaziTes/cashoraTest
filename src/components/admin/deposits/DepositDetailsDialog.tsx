@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Dialog,
   DialogContent,
@@ -6,16 +7,10 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { FileIcon, ImageIcon } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { DepositRequest } from "@/types/deposits";
 
 interface DepositDetailsDialogProps {
-  deposit: {
-    id: number;
-    user: string;
-    amount: number;
-    date: string;
-    receipt?: File;
-  };
+  deposit: DepositRequest;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -27,10 +22,10 @@ export const DepositDetailsDialog = ({
 }: DepositDetailsDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl bg-navy-light border-navy">
         <DialogHeader>
-          <DialogTitle>Deposit Details</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-gray-200">Deposit Details</DialogTitle>
+          <DialogDescription className="text-gray-400">
             Review the deposit information and attached receipt
           </DialogDescription>
         </DialogHeader>
@@ -41,42 +36,50 @@ export const DepositDetailsDialog = ({
             exit={{ opacity: 0, y: -20 }}
             className="space-y-6"
           >
-            <div className="grid grid-cols-2 gap-4">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-navy"
+            >
               <div>
-                <h3 className="font-semibold">Transaction Information</h3>
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="mt-2 space-y-2"
-                >
-                  <p>
-                    <span className="text-muted-foreground">User:</span>{" "}
-                    {deposit.user}
+                <h3 className="font-semibold text-gray-200 mb-4">
+                  Transaction Information
+                </h3>
+                <div className="space-y-2">
+                  <p className="text-gray-300">
+                    <span className="text-gray-400">User:</span> {deposit.user}
                   </p>
-                  <p>
-                    <span className="text-muted-foreground">Amount:</span> $
+                  <p className="text-gray-300">
+                    <span className="text-gray-400">Amount:</span> $
                     {deposit.amount.toLocaleString()}
                   </p>
-                  <p>
-                    <span className="text-muted-foreground">Date:</span>{" "}
-                    {deposit.date}
+                  <p className="text-gray-300">
+                    <span className="text-gray-400">Date:</span> {deposit.date}
                   </p>
-                </motion.div>
+                </div>
               </div>
-            </div>
+            </motion.div>
+
             {deposit.receipt && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.3 }}
+                className="rounded-lg bg-navy p-4"
               >
-                <h3 className="font-semibold mb-2">Receipt</h3>
-                <div className="border rounded-lg p-4">
-                  <p className="text-sm text-muted-foreground mb-2">
+                <h3 className="font-semibold text-gray-200 mb-4">Receipt</h3>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="border border-navy-dark rounded-lg p-4"
+                >
+                  <p className="text-sm text-gray-400 mb-2">
                     Filename: {deposit.receipt.name}
                   </p>
                   {deposit.receipt.type.startsWith("image/") ? (
-                    <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
+                    <div className="relative aspect-video bg-navy-dark rounded-lg overflow-hidden">
                       <motion.img
                         initial={{ scale: 0.9 }}
                         animate={{ scale: 1 }}
@@ -88,7 +91,7 @@ export const DepositDetailsDialog = ({
                   ) : deposit.receipt.type === "application/pdf" ? (
                     <motion.div
                       whileHover={{ scale: 1.02 }}
-                      className="flex items-center gap-2 text-blue-500 hover:text-blue-600"
+                      className="flex items-center gap-2 text-blue-400 hover:text-blue-300"
                     >
                       <FileIcon className="h-5 w-5" />
                       <a
@@ -105,18 +108,18 @@ export const DepositDetailsDialog = ({
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center gap-2"
                     >
-                      <ImageIcon className="h-5 w-5" />
+                      <ImageIcon className="h-5 w-5 text-gray-400" />
                       <a
                         href={URL.createObjectURL(deposit.receipt)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-500 hover:text-blue-600 hover:underline"
+                        className="text-blue-400 hover:text-blue-300 hover:underline"
                       >
                         View Receipt
                       </a>
                     </motion.div>
                   )}
-                </div>
+                </motion.div>
               </motion.div>
             )}
           </motion.div>
